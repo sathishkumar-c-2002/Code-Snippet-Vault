@@ -24,21 +24,25 @@
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
-    // 4. Create a Cube
+    // 4. Load an Image Texture for the Cube
+    const textureLoader = new THREE.TextureLoader();
+    const texture = textureLoader.load('https://th.bing.com/th/id/OIG4.hb6x6NsHBTvbDGaD13Ua');  // Replace with your image URL
+    
+    // 5. Create a Cube with the Image Texture
     const geometry = new THREE.BoxGeometry();
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    const material = new THREE.MeshBasicMaterial({ map: texture });  // Applying the texture
     const cube = new THREE.Mesh(geometry, material);
     scene.add(cube);
 
-    // 5. Position the Camera
+    // 6. Position the Camera
     camera.position.z = 5;
 
-    // 6. Add OrbitControls for interactivity
+    // 7. Add OrbitControls for interactivity
     const controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.25;
 
-    // 7. Animation Function to Rotate the Cube
+    // 8. Animation Function to Rotate the Cube
     function animate() {
       requestAnimationFrame(animate);
 
