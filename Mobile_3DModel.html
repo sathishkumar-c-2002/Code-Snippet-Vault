@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Android Mobile Model</title>
+  <style>
+    body { margin: 0; overflow: hidden; }
+    canvas { display: block; }
+  </style>
+</head>
+<body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.134/examples/js/controls/OrbitControls.js"></script>
+  <script>
+    // 1. Create a Scene
+    const scene = new THREE.Scene();
+
+    // 2. Create a Camera
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+    // 3. Create a Renderer
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    // 4. Load Image Textures for Each Side of the Mobile
+    const textureLoader = new THREE.TextureLoader();
+    const textures = [
+      textureLoader.load('https://cdn.create.vista.com/api/media/small/183710584/stock-photo-robot-with-gadget'), // side
+      textureLoader.load('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5W4Cs-n8k_zS-cOmDbRt2hzpO_2wVITN9A4QsYxgJ1dLL5ukwOVRiwgnDygyoxG7C7qs&usqp=CAU'), // Back
+      textureLoader.load('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxXrOZePw_n0fO9Z3X4hLyaIA7laNNUXBvvRTUJkijuy1Exi6CSc2tZB-0T9En5o2IkqE&usqp=CAU'), // Top
+      textureLoader.load('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnnPkSsViwjzz4pzgIgzQOAc2GrHDT5YidLXesCuwQptw2jZFpv06BNNjG-28nYP9iABE&usqp=CAU'), // Bottom
+      textureLoader.load('https://framerusercontent.com/images/Q2XfaV8lzoBrKMODnTqw31jy9wI.jpg'), // back
+      textureLoader.load('https://framerusercontent.com/images/yRdhzIOUi5BnJlki1spgb2J47RU.png')  // front
+    ];
+
+    // 5. Create Materials for Each Texture
+    const materials = textures.map(texture => new THREE.MeshBasicMaterial({ map: texture }));
+
+    // 6. Create a Rectangular Geometry for the Mobile
+    const geometry = new THREE.BoxGeometry(1, 2, 0.1); // width, height, depth
+    const mobile = new THREE.Mesh(geometry, materials);
+    scene.add(mobile);
+
+    // 7. Position the Camera
+    camera.position.z = 3;
+
+    // 8. Add OrbitControls for Interactivity
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.25;
+
+    // 9. Animation Function (Without Automatic Rotation)
+    function animate() {
+      requestAnimationFrame(animate);
+
+      // Update controls
+      controls.update();
+
+      // Render the scene
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // Resize handling
+    window.addEventListener('resize', () => {
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+    });
+  </script>
+</body>
+</html>
