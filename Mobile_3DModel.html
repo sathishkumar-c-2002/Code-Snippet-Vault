@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>3D Model in Three.js</title>
+  <title>3D Android Mobile Model</title>
   <style>
     body { margin: 0; overflow: hidden; }
     canvas { display: block; }
@@ -18,37 +18,42 @@
 
     // 2. Create a Camera
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    
+
     // 3. Create a Renderer
     const renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
-    // 4. Load an Image Texture for the Cube
+    // 4. Load Image Textures for Each Side of the Mobile
     const textureLoader = new THREE.TextureLoader();
-    const texture = textureLoader.load('https://th.bing.com/th/id/OIG4.hb6x6NsHBTvbDGaD13Ua');  // Replace with your image URL
-    
-    // 5. Create a Cube with the Image Texture
-    const geometry = new THREE.BoxGeometry();
-    const material = new THREE.MeshBasicMaterial({ map: texture });  // Applying the texture
-    const cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
+    const textures = [
+      textureLoader.load('https://framerusercontent.com/images/5s12t6yIkZohiBbwC2s0YZk7IA.png'), // side
+      textureLoader.load('https://framerusercontent.com/images/5oib27hesTuVwO2wwN8AQnTJUMc.png'), // Back
+      textureLoader.load('https://framerusercontent.com/images/5oib27hesTuVwO2wwN8AQnTJUMc.png'), // Top
+      textureLoader.load('https://framerusercontent.com/images/M2mAS5VOD251QzbtKgXS9g3dqQ.png?scale-down-to=512'), // Bottom
+      textureLoader.load('https://framerusercontent.com/images/Q2XfaV8lzoBrKMODnTqw31jy9wI.jpg'), // back
+      textureLoader.load('https://framerusercontent.com/images/yRdhzIOUi5BnJlki1spgb2J47RU.png')  // front
+    ];
 
-    // 6. Position the Camera
-    camera.position.z = 5;
+    // 5. Create Materials for Each Texture
+    const materials = textures.map(texture => new THREE.MeshBasicMaterial({ map: texture }));
 
-    // 7. Add OrbitControls for interactivity
+    // 6. Create a Rectangular Geometry for the Mobile
+    const geometry = new THREE.BoxGeometry(1, 2, 0.1); // width, height, depth
+    const mobile = new THREE.Mesh(geometry, materials);
+    scene.add(mobile);
+
+    // 7. Position the Camera
+    camera.position.z = 3;
+
+    // 8. Add OrbitControls for Interactivity
     const controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.25;
 
-    // 8. Animation Function to Rotate the Cube
+    // 9. Animation Function (Without Automatic Rotation)
     function animate() {
       requestAnimationFrame(animate);
-
-      // Rotate the cube
-      cube.rotation.x += 0.01;
-      cube.rotation.y += 0.01;
 
       // Update controls
       controls.update();
@@ -57,7 +62,7 @@
       renderer.render(scene, camera);
     }
     animate();
-    
+
     // Resize handling
     window.addEventListener('resize', () => {
       renderer.setSize(window.innerWidth, window.innerHeight);
@@ -66,4 +71,4 @@
     });
   </script>
 </body>
-</html>
+</html> 
